@@ -3,14 +3,16 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 
+// Components
+import Navbar from "./components/Navbar";
+
 // Pages
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
-import WebsiteBuilderPage from "./pages/WebsiteBuilderPage";
-import ContentGeneratorPage from "./pages/ContentGeneratorPage";
-import BusinessCardPage from "./pages/BusinessCardPage";
+import EnhancedWebsiteBuilderPage from "./pages/EnhancedWebsiteBuilderPage";
+
 
 function App() {
   return (
@@ -20,10 +22,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/dashboard/website-builder" element={<WebsiteBuilderPage />} />
-          <Route path="/dashboard/content-generator" element={<ContentGeneratorPage />} />
-          <Route path="/dashboard/business-cards" element={<BusinessCardPage />} />
+          <Route path="/dashboard" element={<><Navbar /><DashboardPage /></>} />
+          <Route path="/dashboard/website-builder" element={<><Navbar /><EnhancedWebsiteBuilderPage /></>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

@@ -1,217 +1,189 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, Link } from 'react-router-dom';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const { currentUser, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { currentUser } = useAuth();
+  const [currentTime, setCurrentTime] = useState(new Date());
   
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-  // Feature cards data
+  // Core features data - only the 3 you requested
   const features = [
     {
       id: 'website-builder',
       title: 'AI Website Builder',
-      description: 'Create a professional website tailored to your business in minutes.',
+      description: 'Create stunning, professional websites in minutes with our AI-powered builder.',
+      longDescription: 'Transform your business ideas into beautiful, responsive websites. Our AI analyzes your business type and generates custom designs, content, and layouts tailored specifically for your industry.',
       icon: '🌐',
-      color: '#4A90E2',
-      link: '/dashboard/website-builder'
+      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      link: '/dashboard/website-builder',
+      stats: { created: '2.3K+', avgTime: '5 mins' }
     },
     {
       id: 'content-generation',
-      title: 'Content Generation',
-      description: 'Generate marketing content, product descriptions, and social media posts.',
+      title: 'Content Generator',
+      description: 'Generate compelling marketing content, blog posts, and social media copy instantly.',
+      longDescription: 'Leverage the power of AI to create engaging content for your business. From product descriptions to social media posts, our generator creates content that converts.',
       icon: '✨',
-      color: '#50E3C2',
-      link: '/dashboard/content-generator'
+      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      link: '/dashboard/content-generator',
+      stats: { generated: '15K+', saved: '80% time' }
     },
     {
-      id: 'business-analytics',
-      title: 'Business Analytics',
-      description: 'Track and analyze your business performance with easy-to-understand metrics.',
-      icon: '📊',
-      color: '#F5A623',
-      link: '/dashboard/analytics'
-    },
-    {
-      id: 'social-media',
-      title: 'Social Media Manager',
-      description: 'Schedule and automate posts across all your social media channels.',
-      icon: '📱',
-      color: '#BD10E0',
-      link: '/dashboard/social-media'
-    },
-    {
-      id: 'customer-support',
-      title: 'AI Customer Support',
-      description: 'Set up an AI-powered chatbot to handle common customer inquiries.',
-      icon: '🤖',
-      color: '#9013FE',
-      link: '/dashboard/customer-support'
-    },
-    {
-      id: 'email-marketing',
-      title: 'Email Marketing',
-      description: 'Create and send professional email campaigns to your customers.',
-      icon: '📧',
-      color: '#F5A623',
-      link: '/dashboard/email-marketing'
+      id: 'business-cards',
+      title: 'Business Cards',
+      description: 'Design professional business cards that make lasting first impressions.',
+      longDescription: 'Create stunning business cards that reflect your brand identity. Choose from premium templates or let our AI design the perfect card for your business.',
+      icon: '�',
+      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      link: '/dashboard/business-cards',
+      stats: { designs: '500+', printed: '1M+' }
     }
   ];
 
-  // Quick stats for dashboard
-  const stats = [
-    { label: 'Website Visitors', value: '145', change: '+12%' },
-    { label: 'Social Engagement', value: '2.3K', change: '+5%' },
-    { label: 'Customer Inquiries', value: '24', change: '-3%' },
-    { label: 'Email Open Rate', value: '32%', change: '+2%' }
-  ];
-
-  // Recent activity data (would come from API in real app)
-  const recentActivity = [
-    { id: 1, type: 'website', message: 'Website received 25 new visitors today', time: '2 hours ago' },
-    { id: 2, type: 'content', message: 'New blog post "10 Tips for Small Businesses" generated', time: '1 day ago' },
-    { id: 3, type: 'social', message: 'Instagram post scheduled for tomorrow at 9 AM', time: '3 days ago' },
-    { id: 4, type: 'customer', message: 'New customer inquiry about business hours', time: '4 days ago' }
-  ];
+  const getGreeting = () => {
+    const hour = currentTime.getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
-      <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
-        <div className="sidebar-header">
-          <h2>SmartBiz</h2>
-          <button className="sidebar-toggle" onClick={toggleSidebar}>
-            {sidebarOpen ? '←' : '→'}
-          </button>
-        </div>
-        
-        <div className="user-profile">
-          <img src={currentUser.profileImage} alt={currentUser.name} className="profile-image" />
-          <div className="user-info">
-            <h3>{currentUser.name}</h3>
-            <p>{currentUser.businessName}</p>
+      {/* Hero Section */}
+      <section className="dashboard-hero">
+        <div className="hero-content">
+          <div className="welcome-section">
+            <h1 className="hero-title">
+              {getGreeting()}, <span className="user-name">{currentUser.name}</span>
+            </h1>
+            <p className="hero-subtitle">
+              Ready to grow <span className="business-highlight">{currentUser.businessName}</span>? 
+              Let's create something amazing together.
+            </p>
+          </div>
+          
+          <div className="hero-stats">
+            <div className="stat-card">
+              <div className="stat-number">3</div>
+              <div className="stat-label">Powerful Tools</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-number">{currentTime.toLocaleTimeString()}</div>
+              <div className="stat-label">Current Time</div>
+            </div>
           </div>
         </div>
         
-        <nav className="sidebar-nav">
-          <ul>
-            <li className="active">
-              <Link to="/dashboard">
-                <span className="nav-icon">📊</span>
-                <span className="nav-text">Dashboard</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/website-builder">
-                <span className="nav-icon">🌐</span>
-                <span className="nav-text">Website Builder</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/content-generator">
-                <span className="nav-icon">✨</span>
-                <span className="nav-text">Content Generator</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/analytics">
-                <span className="nav-icon">📈</span>
-                <span className="nav-text">Analytics</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/social-media">
-                <span className="nav-icon">📱</span>
-                <span className="nav-text">Social Media</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/dashboard/settings">
-                <span className="nav-icon">⚙️</span>
-                <span className="nav-text">Settings</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        
-        <div className="sidebar-footer">
-          <button onClick={logout} className="logout-button">
-            <span className="nav-icon">🚪</span>
-            <span className="nav-text">Logout</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main content */}
-      <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>Welcome back, {currentUser.name}!</h1>
-          <p>Here's what's happening with {currentUser.businessName} today</p>
-        </header>
-
-        {/* Stats overview */}
-        <section className="stats-section">
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
-                <span className={`stat-change ${stat.change.startsWith('+') ? 'positive' : 'negative'}`}>
-                  {stat.change}
-                </span>
-              </div>
-            ))}
+        <div className="hero-background">
+          <div className="floating-elements">
+            <div className="floating-element" style={{animationDelay: '0s'}}>🚀</div>
+            <div className="floating-element" style={{animationDelay: '2s'}}>⭐</div>
+            <div className="floating-element" style={{animationDelay: '4s'}}>💡</div>
+            <div className="floating-element" style={{animationDelay: '6s'}}>🎯</div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Features */}
-        <section className="dashboard-section">
-          <h2>Tools & Features</h2>
-          <div className="features-grid">
-            {features.map(feature => (
-              <Link to={feature.link} className="feature-card" key={feature.id} style={{ borderTopColor: feature.color }}>
-                <div className="feature-icon" style={{ backgroundColor: feature.color }}>
-                  {feature.icon}
+      {/* Features Section */}
+      <section className="features-section">
+        <div className="section-header">
+          <h2 className="section-title">Your Digital Toolkit</h2>
+          <p className="section-subtitle">Everything you need to digitize and grow your business</p>
+        </div>
+        
+        <div className="features-grid">
+          {features.map((feature, index) => (
+            <Link 
+              to={feature.link} 
+              key={feature.id} 
+              className="feature-card"
+              style={{animationDelay: `${index * 0.2}s`}}
+            >
+              <div className="card-background" style={{background: feature.gradient}}></div>
+              
+              <div className="card-content">
+                <div className="card-header">
+                  <div className="feature-icon" style={{background: feature.gradient}}>
+                    {feature.icon}
+                  </div>
+                  <div className="feature-stats">
+                    <div className="stat">
+                      <span className="stat-value">{Object.values(feature.stats)[0]}</span>
+                      <span className="stat-key">{Object.keys(feature.stats)[0]}</span>
+                    </div>
+                    <div className="stat">
+                      <span className="stat-value">{Object.values(feature.stats)[1]}</span>
+                      <span className="stat-key">{Object.keys(feature.stats)[1]}</span>
+                    </div>
+                  </div>
                 </div>
-                <h3>{feature.title}</h3>
-                <p>{feature.description}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Recent activity */}
-        <section className="dashboard-section">
-          <h2>Recent Activity</h2>
-          <div className="activity-list">
-            {recentActivity.map(activity => (
-              <div key={activity.id} className="activity-item">
-                <div className="activity-icon">
-                  {activity.type === 'website' && '🌐'}
-                  {activity.type === 'content' && '✨'}
-                  {activity.type === 'social' && '📱'}
-                  {activity.type === 'customer' && '👤'}
+                
+                <div className="card-body">
+                  <h3 className="feature-title">{feature.title}</h3>
+                  <p className="feature-description">{feature.description}</p>
+                  <p className="feature-long-description">{feature.longDescription}</p>
                 </div>
-                <div className="activity-content">
-                  <p>{activity.message}</p>
-                  <span className="activity-time">{activity.time}</span>
+                
+                <div className="card-footer">
+                  <button className="feature-button">
+                    <span>Get Started</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
-            ))}
+              
+              <div className="card-glow"></div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Quick Actions */}
+      <section className="quick-actions">
+        <div className="actions-container">
+          <div className="action-item">
+            <div className="action-icon">📊</div>
+            <div className="action-content">
+              <h4>Track Progress</h4>
+              <p>Monitor your digital transformation journey</p>
+            </div>
           </div>
-        </section>
-      </main>
+          
+          <div className="action-item">
+            <div className="action-icon">🎨</div>
+            <div className="action-content">
+              <h4>Design Assets</h4>
+              <p>Create cohesive brand materials</p>
+            </div>
+          </div>
+          
+          <div className="action-item">
+            <div className="action-icon">🌟</div>
+            <div className="action-content">
+              <h4>Grow Online</h4>
+              <p>Expand your digital presence</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
 
 export default DashboardPage;
+
