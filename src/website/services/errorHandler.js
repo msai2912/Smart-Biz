@@ -130,7 +130,102 @@ export const getFallbackContent = (businessInfo, type = 'content') => {
       tagline: `Your trusted ${(businessInfo.type || 'local business').toLowerCase()}`,
       about: businessInfo.description || `${businessInfo.name || 'Our business'} is dedicated to providing excellent service to our customers. We pride ourselves on quality and customer satisfaction.`,
       services: businessInfo.services || businessInfo.products || 'We offer a wide range of services tailored to meet your needs.',
-      callToAction: 'Contact us today to learn more!'
+      callToAction: 'Contact us today to learn more!',
+      metaDescription: `${businessInfo.name || 'Our Business'} - ${(businessInfo.type || 'local business').toLowerCase()} providing excellent service`,
+      keyFeatures: ['Quality Service', 'Customer Satisfaction', 'Professional Team'],
+      valueProposition: 'Your trusted partner for all your needs',
+      contactMessage: 'Get in touch with us today!'
+    };
+  }
+  
+  if (type === 'enhanced_styles') {
+    // Business-type specific enhanced fallback styles
+    const enhancedStylesByType = {
+      'Restaurant': {
+        primaryColor: '#D32F2F',
+        secondaryColor: '#FF8F00',
+        accentColor: '#FFC107',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        headingFont: 'Playfair Display',
+        bodyFont: 'Source Sans Pro',
+        buttonStyle: 'rounded',
+        borderRadius: '8',
+        shadowStyle: 'medium',
+        layoutStyle: 'centered',
+        animationStyle: 'moderate'
+      },
+      'Retail Store': {
+        primaryColor: '#7B1FA2',
+        secondaryColor: '#E91E63',
+        accentColor: '#FF9800',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        headingFont: 'Montserrat',
+        bodyFont: 'Open Sans',
+        buttonStyle: 'rounded',
+        borderRadius: '12',
+        shadowStyle: 'subtle',
+        layoutStyle: 'centered',
+        animationStyle: 'minimal'
+      },
+      'Professional Services': {
+        primaryColor: '#1976D2',
+        secondaryColor: '#424242',
+        accentColor: '#FFC107',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        headingFont: 'Roboto',
+        bodyFont: 'Roboto',
+        buttonStyle: 'square',
+        borderRadius: '4',
+        shadowStyle: 'subtle',
+        layoutStyle: 'centered',
+        animationStyle: 'minimal'
+      },
+      'Healthcare': {
+        primaryColor: '#00695C',
+        secondaryColor: '#26A69A',
+        accentColor: '#4CAF50',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        headingFont: 'Source Sans Pro',
+        bodyFont: 'Source Sans Pro',
+        buttonStyle: 'rounded',
+        borderRadius: '8',
+        shadowStyle: 'subtle',
+        layoutStyle: 'centered',
+        animationStyle: 'minimal'
+      },
+      'Technology': {
+        primaryColor: '#3F51B5',
+        secondaryColor: '#9C27B0',
+        accentColor: '#00BCD4',
+        backgroundColor: '#ffffff',
+        textColor: '#333333',
+        headingFont: 'Roboto',
+        bodyFont: 'Roboto',
+        buttonStyle: 'rounded',
+        borderRadius: '8',
+        shadowStyle: 'medium',
+        layoutStyle: 'full-width',
+        animationStyle: 'dynamic'
+      }
+    };
+
+    return enhancedStylesByType[businessInfo.type] || {
+      primaryColor: '#667eea',
+      secondaryColor: '#764ba2',
+      accentColor: '#4ade80',
+      backgroundColor: '#ffffff',
+      textColor: '#333333',
+      headingFont: 'Montserrat',
+      bodyFont: 'Open Sans',
+      buttonStyle: 'rounded',
+      borderRadius: '8',
+      shadowStyle: 'subtle',
+      layoutStyle: 'centered',
+      animationStyle: 'minimal'
     };
   }
   
@@ -180,6 +275,24 @@ export const getFallbackContent = (businessInfo, type = 'content') => {
       accentColor: '#F5A623',
       headingFont: 'Montserrat',
       bodyFont: 'Open Sans'
+    };
+  }
+  
+  if (type === 'layout') {
+    // Basic layout fallback
+    return {
+      pageStructure: ['Header', 'Hero', 'About', 'Services', 'Contact', 'Footer'],
+      homepageLayout: [
+        'Navigation Bar',
+        'Hero Section with Call-to-Action',
+        'About Us Overview',
+        'Services/Products Highlight',
+        'Contact Information',
+        'Footer'
+      ],
+      ctaStrategy: 'Primary CTA in hero, secondary CTAs throughout sections',
+      contentHierarchy: 'Hero → About → Services → Contact',
+      mobileConsiderations: ['Responsive design', 'Touch-friendly buttons', 'Mobile navigation']
     };
   }
   
