@@ -13,6 +13,7 @@ const RegisterPage = () => {
     businessType: 'Retail'
   });
   const [formErrors, setFormErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const { register, error } = useAuth();
   const navigate = useNavigate();
 
@@ -46,13 +47,21 @@ const RegisterPage = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      const { name, email, password, businessName, businessType } = formData;
-      if (register(name, email, password, businessName, businessType)) {
-        navigate('/dashboard');
+      setIsLoading(true);
+      try {
+        const { name, email, password, businessName, businessType } = formData;
+        const success = await register(name, email, password, businessName, businessType);
+        if (success) {
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Registration failed:', error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -162,7 +171,9 @@ const RegisterPage = () => {
             </select>
           </div>
           
-          <button type="submit" className="register-button">Create Account</button>
+          <button type="submit" className="register-button" disabled={isLoading}>
+            {isLoading ? 'Creating Account...' : 'Create Account'}
+          </button>
         </form>
         
         <div className="register-footer">

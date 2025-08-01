@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoadingSpinner.css';
 
-function LoadingSpinner({ message = "Loading...", stage = "", progress = null }) {
+function LoadingSpinner({ message = "", stage = "", progress = null }) {
   return (
     <div className="loading-spinner-container">
       <div className="loading-spinner">

@@ -810,3 +810,61 @@
   text-align: center;
   padding: 20px;
 }
+
+/* Fullscreen Mode Styles */
+.website-preview-container.fullscreen-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: white;
+  margin: 0;
+  padding: 0;
+}
+
+.website-preview-container.fullscreen-mode .preview-layout {
+  height: 100vh;
+  min-height: 100vh;
+}
+
+.website-preview-container.fullscreen-mode .preview-main {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.website-preview-container.fullscreen-mode .website-frame {
+  width: 100%;
+  height: 100vh;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.website-preview-container.fullscreen-mode .website-iframe {
+  width: 100%;
+  height: 100vh;
+  border: none;
+  border-radius: 0;
+}
+
+/* Remove background and gradients in fullscreen */
+.website-preview-container.fullscreen-mode {
+  background: white !important;
+}
+
+/* Ensure iframe takes full space */
+.website-preview-container.fullscreen-mode .preview-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.website-preview-container.fullscreen-mode .website-frame {
+  flex: 1;
+  display: flex;
+}

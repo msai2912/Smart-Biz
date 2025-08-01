@@ -205,11 +205,7 @@ const BusinessCardPage = () => {
 
   return (
     <div className="business-card-page">
-      <header className="page-header">
-        <Link to="/dashboard" className="back-link">← Back to Dashboard</Link>
-        <h1>Business Card Generator</h1>
-        <p>Create professional business cards for your team</p>
-      </header>
+      
       
       <div className="business-card-container">
         <div className="card-form-container">

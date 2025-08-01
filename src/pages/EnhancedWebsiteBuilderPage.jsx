@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-// import { useAuth } from '../../context/AuthContext'; // <-- File not found, comment or fix path
-import EnhancedBusinessForm from '../website/components/EnhancedBusinessForm';
-import TemplatePreview from '../website/components/TemplatePreview';
+import { useAuth } from '../context/AuthContext';
+import SimpleBusinessForm from '../website/components/SimpleBusinessForm';
 import WebsitePreview from '../website/components/WebsitePreview';
 import EnhancedWebsiteGenerator from '../website/services/enhancedWebsiteGenerator';
 import LoadingSpinner from '../website/components/LoadingSpinner';
@@ -10,31 +9,33 @@ import './EnhancedWebsiteBuilderPage.css';
 
 
 const EnhancedWebsiteBuilderPage = () => {
-  // const { currentUser } = useAuth(); // <-- File not found, comment or fix path
+  const { currentUser } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState(0);
-  const [selectedTemplate, setSelectedTemplate] = useState('modern');
-  const [formData, setFormData] = useState(null);
+  const [businessDescription, setBusinessDescription] = useState('');
   const [generatedWebsite, setGeneratedWebsite] = useState(null);
   const [error, setError] = useState(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
 
-  // if (!currentUser) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
 
-  const handleFormSubmit = async (submittedData) => {
-    setFormData(submittedData);
+  const handleFormSubmit = async (description) => {
+    setBusinessDescription(description);
     setCurrentStep(2);
+    // Automatically start generation
+    await handleGenerateWebsite(description);
   };
 
   const handleTemplateSelect = (templateId) => {
-    setSelectedTemplate(templateId);
+    // No longer needed - AI will select template automatically
   };
 
-  const handleGenerateWebsite = async () => {
-    if (!formData) return;
+  const handleGenerateWebsite = async (description = businessDescription) => {
+    if (!description) return;
 
     setIsGenerating(true);
     setGenerationProgress(0);
@@ -52,13 +53,9 @@ const EnhancedWebsiteBuilderPage = () => {
         });
       }, 500);
 
-      // Generate the website using AI
-      const result = await EnhancedWebsiteGenerator.generateCompleteWebsite(
-        formData.businessInfo,
-        formData.userPreferences,
-        formData.contentRequirements,
-        selectedTemplate
-      );
+      // Generate the website using AI with just the business description
+      // AI will automatically determine template, style, colors, content, etc.
+      const result = await EnhancedWebsiteGenerator.generateFromDescription(description);
 
       clearInterval(progressInterval);
       setGenerationProgress(100);
@@ -73,6 +70,7 @@ const EnhancedWebsiteBuilderPage = () => {
     } catch (error) {
       console.error('Website generation error:', error);
       setError('Failed to generate website. Please try again.');
+      setCurrentStep(1); // Go back to input form
     } finally {
       setIsGenerating(false);
       setTimeout(() => setGenerationProgress(0), 1000);
@@ -81,16 +79,47 @@ const EnhancedWebsiteBuilderPage = () => {
 
   const handleBackToForm = () => {
     setCurrentStep(1);
-    setFormData(null);
+    setBusinessDescription('');
     setGeneratedWebsite(null);
     setError(null);
   };
 
-  const handleBackToTemplate = () => {
+  const handleRegenerateWebsite = () => {
     setCurrentStep(2);
     setGeneratedWebsite(null);
     setError(null);
+    handleGenerateWebsite();
   };
+
+  const handleFullScreenToggle = () => {
+    setIsFullScreen(!isFullScreen);
+  };
+
+  const handleExitFullScreen = () => {
+    setIsFullScreen(false);
+  };
+
+  // Handle ESC key to exit full screen
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && isFullScreen) {
+        handleExitFullScreen();
+      }
+    };
+
+    if (isFullScreen) {
+      document.addEventListener('keydown', handleKeyDown);
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'auto';
+    };
+  }, [isFullScreen]);
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -99,9 +128,9 @@ const EnhancedWebsiteBuilderPage = () => {
           <div className="step-content">
             <div className="step-header">
               <h1>AI Website Builder</h1>
-              <p>Create a professional website tailored to your business with the power of AI</p>
+              <p>Describe your business and let AI create a professional website for you</p>
             </div>
-            <EnhancedBusinessForm 
+            <SimpleBusinessForm 
               onSubmit={handleFormSubmit}
               isLoading={isGenerating}
             />
@@ -112,95 +141,60 @@ const EnhancedWebsiteBuilderPage = () => {
         return (
           <div className="step-content">
             <div className="step-header">
-              <h1>Choose Your Template</h1>
-              <p>Select a design template that matches your business style</p>
-            </div>
-
-            <div className="template-selection">
-              <TemplatePreview
-                businessInfo={formData?.businessInfo}
-                selectedTemplate={selectedTemplate}
-                onSelectTemplate={handleTemplateSelect}
-                generatedStyles={null} // Will be generated after template selection
-              />
+              <h1>Generating Your Website</h1>
+              <p>Our AI is analyzing your business and creating a custom website</p>
             </div>
 
             <div className="generation-section">
               <div className="business-summary">
-                <h3>Business Summary</h3>
-                <div className="summary-item">
-                  <span className="label">Business Name:</span>
-                  <span className="value">{formData?.businessInfo?.name}</span>
-                </div>
-                <div className="summary-item">
-                  <span className="label">Type:</span>
-                  <span className="value">{formData?.businessInfo?.type}</span>
-                </div>
-                <div className="summary-item">
-                  <span className="label">Style Preference:</span>
-                  <span className="value">{formData?.userPreferences?.style || 'Not specified'}</span>
-                </div>
-                <div className="summary-item">
-                  <span className="label">Content Tone:</span>
-                  <span className="value">{formData?.userPreferences?.tone || 'Not specified'}</span>
-                </div>
+                <h3>Your Business Description</h3>
+                <p style={{ padding: '1rem', background: '#f8fafc', borderRadius: '8px', fontStyle: 'italic' }}>
+                  "{businessDescription}"
+                </p>
               </div>
 
               {error && (
                 <div className="error-message">
                   <p>{error}</p>
-                  <button onClick={() => setError(null)} className="btn-secondary">
-                    Dismiss
+                  <button 
+                    className="btn-secondary"
+                    onClick={handleBackToForm}
+                  >
+                    Try Again
                   </button>
                 </div>
               )}
 
-              {isGenerating ? (
-                <div className="generation-progress">
-                  <LoadingSpinner />
-                  <h3>Generating Your Website...</h3>
-                  <div className="progress-bar">
-                    <div 
-                      className="progress-fill" 
-                      style={{ width: `${generationProgress}%` }}
-                    />
+              <div className="generation-progress">
+                <LoadingSpinner />
+                <h3>AI is working on your website...</h3>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{ width: `${generationProgress}%` }}
+                  ></div>
+                </div>
+                <p style={{ textAlign: 'center', color: '#667eea', fontWeight: '600' }}>
+                  {generationProgress}% Complete
+                </p>
+                <div className="generation-steps">
+                  <div className={`step ${generationProgress > 10 ? 'completed' : ''}`}>
+                    🧠 Analyzing business description
                   </div>
-                  <p>{generationProgress}% Complete</p>
-                  <div className="generation-steps">
-                    <div className={`step ${generationProgress >= 20 ? 'completed' : ''}`}>
-                      Analyzing your business
-                    </div>
-                    <div className={`step ${generationProgress >= 40 ? 'completed' : ''}`}>
-                      Generating content with AI
-                    </div>
-                    <div className={`step ${generationProgress >= 60 ? 'completed' : ''}`}>
-                      Creating design system
-                    </div>
-                    <div className={`step ${generationProgress >= 80 ? 'completed' : ''}`}>
-                      Building your website
-                    </div>
-                    <div className={`step ${generationProgress >= 100 ? 'completed' : ''}`}>
-                      Finalizing details
-                    </div>
+                  <div className={`step ${generationProgress > 30 ? 'completed' : ''}`}>
+                    🎨 Selecting optimal template & design
+                  </div>
+                  <div className={`step ${generationProgress > 50 ? 'completed' : ''}`}>
+                    ✍️ Generating custom content
+                  </div>
+                  <div className={`step ${generationProgress > 70 ? 'completed' : ''}`}>
+                    🎯 Optimizing layout & structure
+                  </div>
+                  <div className={`step ${generationProgress > 90 ? 'completed' : ''}`}>
+                    ✨ Final touches & polish
                   </div>
                 </div>
-              ) : (
-                <div className="generation-controls">
-                  <button 
-                    onClick={handleGenerateWebsite}
-                    className="btn-primary generate-btn"
-                    disabled={!selectedTemplate}
-                  >
-                    🚀 Generate My Website with AI
-                  </button>
-                  <button 
-                    onClick={handleBackToForm}
-                    className="btn-secondary"
-                  >
-                    ← Back to Form
-                  </button>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         );
@@ -210,23 +204,23 @@ const EnhancedWebsiteBuilderPage = () => {
           <div className="step-content">
             <div className="step-header">
               <h1>Your Website is Ready!</h1>
-              <p>Review your AI-generated website and make any adjustments</p>
+              <p>AI has created a custom website based on your business description</p>
             </div>
 
             {generatedWebsite && (
               <div className="website-preview-section">
                 <div className="generation-info">
                   <div className="info-badge">
-                    <span className="badge-icon">🤖</span>
-                    <span>Generated with AI</span>
-                  </div>
-                  <div className="info-badge">
-                    <span className="badge-icon">⚡</span>
-                    <span>Template: {selectedTemplate}</span>
-                  </div>
-                  <div className="info-badge">
                     <span className="badge-icon">🎨</span>
-                    <span>Custom Styling</span>
+                    Template: {generatedWebsite?.template || 'Auto-Selected'}
+                  </div>
+                  <div className="info-badge">
+                    <span className="badge-icon">🌈</span>
+                    Style: {generatedWebsite?.style || 'AI-Optimized'}
+                  </div>
+                  <div className="info-badge">
+                    <span className="badge-icon">📝</span>
+                    Content: Custom Generated
                   </div>
                 </div>
 
@@ -239,16 +233,25 @@ const EnhancedWebsiteBuilderPage = () => {
 
                 <div className="preview-controls">
                   <button 
-                    onClick={handleBackToTemplate}
-                    className="btn-secondary"
-                  >
-                    ← Back to Templates
-                  </button>
-                  <button 
                     onClick={handleBackToForm}
                     className="btn-secondary"
                   >
-                    ← Start Over
+                    Start Over
+                  </button>
+                  <button 
+                    onClick={handleRegenerateWebsite}
+                    className="btn-secondary"
+                  >
+                    Regenerate
+                  </button>
+                  <button 
+                    onClick={handleFullScreenToggle}
+                    className="btn-secondary"
+                  >
+                    🔍 Full Screen Preview
+                  </button>
+                  <button className="btn-primary">
+                    Download Website
                   </button>
                 </div>
               </div>
@@ -262,38 +265,55 @@ const EnhancedWebsiteBuilderPage = () => {
   };
 
   return (
-    <div className="enhanced-website-builder">
-      <header className="builder-header">
-        <Link to="/dashboard" className="back-link">
-          ← Back to Dashboard
-        </Link>
+    <>
+      <div className="enhanced-website-builder">
         
-        <div className="progress-indicator">
-          <div className={`progress-step ${currentStep >= 1 ? 'active' : ''}`}>
-            <span className="step-number">1</span>
-            <span className="step-label">Business Info</span>
+
+        <main className="builder-main">
+          {renderStepContent()}
+        </main>
+
+        <footer className="builder-footer">
+          <div className="footer-content">
+            <p>Powered by Gemini AI • Creating beautiful websites for small businesses</p>
           </div>
-          <div className={`progress-step ${currentStep >= 2 ? 'active' : ''}`}>
-            <span className="step-number">2</span>
-            <span className="step-label">Template & Generate</span>
+        </footer>
+      </div>
+
+      {/* Full Screen Preview Modal */}
+      {isFullScreen && generatedWebsite && (
+        <div 
+          className="fullscreen-modal"
+          onClick={handleExitFullScreen}
+        >
+          <div className="fullscreen-header">
+            <div className="fullscreen-title">
+              <h3>Full Screen Preview</h3>
+              <span className="preview-info">Your AI-generated website • Click anywhere to close or press ESC</span>
+            </div>
+            <button 
+              onClick={handleExitFullScreen}
+              className="exit-fullscreen-btn"
+              title="Exit Full Screen (ESC)"
+            >
+              ✕
+            </button>
           </div>
-          <div className={`progress-step ${currentStep >= 3 ? 'active' : ''}`}>
-            <span className="step-number">3</span>
-            <span className="step-label">Preview & Customize</span>
+          <div 
+            className="fullscreen-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <WebsitePreview
+              businessInfo={generatedWebsite.businessInfo}
+              content={generatedWebsite.content}
+              template={generatedWebsite.template}
+              styles={generatedWebsite.styles}
+              isFullScreen={true}
+            />
           </div>
         </div>
-      </header>
-
-      <main className="builder-main">
-        {renderStepContent()}
-      </main>
-
-      <footer className="builder-footer">
-        <div className="footer-content">
-          <p>Powered by Gemini AI • Creating beautiful websites for small businesses</p>
-        </div>
-      </footer>
-    </div>
+      )}
+    </>
   );
 };
 

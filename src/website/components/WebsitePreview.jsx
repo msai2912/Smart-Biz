@@ -4,7 +4,7 @@ import ContentEditor from './ContentEditor';
 import { downloadWebsite, previewWebsite, generateWebsiteHTML } from '../services/websiteExporter';
 import { useNotification } from './Notification';
 
-function WebsitePreview({ businessInfo, content, template, styles }) {
+function WebsitePreview({ businessInfo, content, template, styles, isFullScreen = false }) {
   const [editableContent, setEditableContent] = useState(content);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -89,31 +89,35 @@ function WebsitePreview({ businessInfo, content, template, styles }) {
 
   // Return new floating design
   return (
-    <div className="website-preview-container">
+    <div className={`website-preview-container ${isFullScreen ? 'fullscreen-mode' : ''}`}>
       {NotificationComponent}
       
       <div className="preview-layout">
-        {/* Floating Sidebar Toggle */}
-        <button 
-          className="sidebar-toggle" 
-          onClick={toggleSidebar}
-          aria-label="Toggle editing panel"
-        >
-          {sidebarCollapsed || !sidebarOpen ? '⚙️' : '✕'}
-        </button>
+        {/* Floating Sidebar Toggle - hide in fullscreen */}
+        {!isFullScreen && (
+          <button 
+            className="sidebar-toggle" 
+            onClick={toggleSidebar}
+            aria-label="Toggle editing panel"
+          >
+            {sidebarCollapsed || !sidebarOpen ? '⚙️' : '✕'}
+          </button>
+        )}
 
-        {/* Floating Control Panel */}
-        <div className={`preview-sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${sidebarOpen ? 'open' : ''}`}>
-          {!sidebarCollapsed && (
-            <>
-              <ContentEditor 
-                content={displayContent}
-                onContentChange={handleContentChange}
-                businessInfo={businessInfo}
-              />
-            </>
-          )}
-        </div>
+        {/* Floating Control Panel - hide in fullscreen */}
+        {!isFullScreen && (
+          <div className={`preview-sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${sidebarOpen ? 'open' : ''}`}>
+            {!sidebarCollapsed && (
+              <>
+                <ContentEditor 
+                  content={displayContent}
+                  onContentChange={handleContentChange}
+                  businessInfo={businessInfo}
+                />
+              </>
+            )}
+          </div>
+        )}
         
         {/* Main Preview Area */}
         <div className="preview-main">
@@ -127,15 +131,17 @@ function WebsitePreview({ businessInfo, content, template, styles }) {
           </div>
         </div>
 
-        {/* Floating Action Bar */}
-        <div className="floating-actions">
-          <button onClick={handlePreview} className="action-btn preview">
-            🚀 Preview
-          </button>
-          <button onClick={handleDownload} className="action-btn download">
-            📥 Download
-          </button>
-        </div>
+        {/* Floating Action Bar - hide in fullscreen */}
+        {!isFullScreen && (
+          <div className="floating-actions">
+            <button onClick={handlePreview} className="action-btn preview">
+              🚀 Preview
+            </button>
+            <button onClick={handleDownload} className="action-btn download">
+              📥 Download
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

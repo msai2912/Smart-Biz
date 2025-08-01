@@ -10,6 +10,230 @@ import { generateWebsiteHTML } from './websiteExporter';
  * Integrates AI content generation, styling, and layout suggestions with template rendering
  */
 export class EnhancedWebsiteGenerator {
+
+  /**
+   * Generate a complete website from just a business description
+   * AI will automatically determine template, style, content, and all other aspects
+   * @param {string} businessDescription - Detailed business description
+   * @returns {Promise<Object>} - Complete website data including content, styles, and HTML
+   */
+  static async generateFromDescription(businessDescription) {
+    try {
+      console.log('Starting AI website generation from description...');
+      console.log('Business description:', businessDescription);
+
+      // Step 1: AI analyzes the description and extracts business info
+      const analyzedBusiness = await this.analyzeBusinessDescription(businessDescription);
+      
+      // Step 2: AI selects optimal template based on business type and description
+      const selectedTemplate = await this.selectOptimalTemplate(analyzedBusiness);
+      
+      // Step 3: AI determines style preferences based on business analysis
+      const aiStylePreferences = await this.generateStylePreferences(analyzedBusiness);
+      
+      // Step 4: Generate comprehensive content using AI
+      const generatedContent = await generateWebsiteContent(
+        analyzedBusiness, 
+        aiStylePreferences, 
+        selectedTemplate
+      );
+
+      // Step 5: Generate enhanced styling suggestions
+      const generatedStyles = await generateEnhancedStyleSuggestions(
+        analyzedBusiness.type,
+        aiStylePreferences,
+        analyzedBusiness
+      );
+
+      // Step 6: Create enhanced template data
+      const enhancedTemplateData = {
+        businessInfo: analyzedBusiness,
+        content: generatedContent,
+        styles: generatedStyles,
+        template: selectedTemplate,
+        userPreferences: aiStylePreferences,
+        generatedAt: new Date().toISOString(),
+        features: this.determineFeatures(analyzedBusiness)
+      };
+
+      // Step 7: Generate final HTML (optional, for export)
+      const websiteHTML = await generateWebsiteHTML(enhancedTemplateData);
+
+      console.log('✅ Website generation completed successfully');
+
+      return {
+        success: true,
+        data: {
+          ...enhancedTemplateData,
+          html: websiteHTML,
+          metadata: {
+            generationType: 'ai-description',
+            originalDescription: businessDescription,
+            processingTime: Date.now(),
+            version: '2.0'
+          }
+        }
+      };
+
+    } catch (error) {
+      console.error('❌ Enhanced website generation failed:', error);
+      return {
+        success: false,
+        error: error.message || 'Failed to generate website',
+        details: error
+      };
+    }
+  }
+
+  /**
+   * Analyze business description and extract structured business information
+   */
+  static async analyzeBusinessDescription(description) {
+    // AI-powered business analysis
+    const businessTypes = {
+      'restaurant': ['restaurant', 'cafe', 'food', 'dining', 'pizza', 'coffee', 'bar', 'eatery'],
+      'retail': ['shop', 'store', 'boutique', 'retail', 'clothing', 'fashion', 'merchandise'],
+      'salon': ['salon', 'spa', 'beauty', 'hair', 'nails', 'massage', 'wellness'],
+      'professional': ['consulting', 'law', 'accounting', 'finance', 'legal', 'advisory', 'firm'],
+      'fitness': ['gym', 'fitness', 'yoga', 'pilates', 'training', 'exercise', 'health'],
+      'healthcare': ['medical', 'dental', 'therapy', 'clinic', 'health', 'doctor'],
+      'real-estate': ['real estate', 'property', 'homes', 'realty', 'agent'],
+      'education': ['school', 'education', 'training', 'tutoring', 'learning'],
+      'automotive': ['auto', 'car', 'vehicle', 'repair', 'mechanic'],
+      'technology': ['tech', 'software', 'web', 'IT', 'digital', 'computer']
+    };
+
+    let detectedType = 'professional'; // default
+    const lowerDesc = description.toLowerCase();
+    
+    for (const [type, keywords] of Object.entries(businessTypes)) {
+      if (keywords.some(keyword => lowerDesc.includes(keyword))) {
+        detectedType = type;
+        break;
+      }
+    }
+
+    // Extract business name (simple approach - first proper noun or business-like term)
+    const nameMatch = description.match(/^([A-Z][a-zA-Z\s&]+)(?=\s+is|\s+are|,|\.|specializes|provides|offers)/);
+    const businessName = nameMatch ? nameMatch[1].trim() : 'Your Business';
+
+    return {
+      name: businessName,
+      type: detectedType,
+      description: description,
+      industry: detectedType,
+      targetAudience: this.extractTargetAudience(description),
+      location: this.extractLocation(description),
+      services: this.extractServices(description),
+      specialties: this.extractSpecialties(description)
+    };
+  }
+
+  /**
+   * Select optimal template based on business analysis
+   */
+  static async selectOptimalTemplate(businessInfo) {
+    const templateMapping = {
+      'restaurant': 'restaurant',
+      'retail': 'modern',
+      'salon': 'elegant',
+      'professional': 'corporate',
+      'fitness': 'dynamic',
+      'healthcare': 'clean',
+      'real-estate': 'professional',
+      'education': 'friendly',
+      'automotive': 'bold',
+      'technology': 'modern'
+    };
+
+    return templateMapping[businessInfo.type] || 'modern';
+  }
+
+  /**
+   * Generate AI-optimized style preferences
+   */
+  static async generateStylePreferences(businessInfo) {
+    const styleMapping = {
+      'restaurant': { style: 'warm', tone: 'friendly', mood: 'inviting' },
+      'retail': { style: 'modern', tone: 'trendy', mood: 'energetic' },
+      'salon': { style: 'elegant', tone: 'sophisticated', mood: 'luxury' },
+      'professional': { style: 'corporate', tone: 'professional', mood: 'trustworthy' },
+      'fitness': { style: 'dynamic', tone: 'motivational', mood: 'energetic' },
+      'healthcare': { style: 'clean', tone: 'caring', mood: 'trustworthy' },
+      'real-estate': { style: 'professional', tone: 'trustworthy', mood: 'reliable' },
+      'education': { style: 'friendly', tone: 'approachable', mood: 'supportive' },
+      'automotive': { style: 'bold', tone: 'confident', mood: 'reliable' },
+      'technology': { style: 'modern', tone: 'innovative', mood: 'cutting-edge' }
+    };
+
+    return styleMapping[businessInfo.type] || { style: 'modern', tone: 'professional', mood: 'trustworthy' };
+  }
+
+  /**
+   * Determine required features based on business type
+   */
+  static determineFeatures(businessInfo) {
+    const featureMapping = {
+      'restaurant': ['gallery', 'contact', 'menu', 'location'],
+      'retail': ['gallery', 'products', 'contact', 'ecommerce'],
+      'salon': ['booking', 'services', 'gallery', 'testimonials'],
+      'professional': ['services', 'about', 'contact', 'testimonials'],
+      'fitness': ['classes', 'booking', 'gallery', 'contact'],
+      'healthcare': ['services', 'booking', 'contact', 'about'],
+      'real-estate': ['listings', 'gallery', 'contact', 'about'],
+      'education': ['courses', 'about', 'contact', 'testimonials'],
+      'automotive': ['services', 'gallery', 'contact', 'about'],
+      'technology': ['services', 'portfolio', 'contact', 'about']
+    };
+
+    return featureMapping[businessInfo.type] || ['about', 'services', 'contact'];
+  }
+
+  // Helper methods for extracting information from description
+  static extractTargetAudience(description) {
+    const audienceKeywords = {
+      'professionals': ['professional', 'executive', 'business', 'corporate'],
+      'families': ['family', 'families', 'children', 'kids'],
+      'young adults': ['young', 'college', 'student', 'millennial'],
+      'seniors': ['senior', 'elderly', 'mature', 'retirement'],
+      'health-conscious': ['health', 'wellness', 'fitness', 'organic']
+    };
+
+    const lowerDesc = description.toLowerCase();
+    for (const [audience, keywords] of Object.entries(audienceKeywords)) {
+      if (keywords.some(keyword => lowerDesc.includes(keyword))) {
+        return audience;
+      }
+    }
+    return 'general public';
+  }
+
+  static extractLocation(description) {
+    const locationMatch = description.match(/(?:in|located in|based in)\s+([A-Z][a-zA-Z\s,]+?)(?:\.|,|\s+and|\s+with|\s+we)/i);
+    return locationMatch ? locationMatch[1].trim() : null;
+  }
+
+  static extractServices(description) {
+    const serviceKeywords = ['offers', 'provides', 'specializes in', 'services include'];
+    for (const keyword of serviceKeywords) {
+      const match = description.match(new RegExp(`${keyword}\\s+([^.]+)`, 'i'));
+      if (match) {
+        return match[1].trim();
+      }
+    }
+    return null;
+  }
+
+  static extractSpecialties(description) {
+    const specialtyKeywords = ['specializes', 'expert', 'focus', 'known for'];
+    for (const keyword of specialtyKeywords) {
+      const match = description.match(new RegExp(`${keyword}\\s+(?:in\\s+)?([^.]+)`, 'i'));
+      if (match) {
+        return match[1].trim();
+      }
+    }
+    return null;
+  }
   
   /**
    * Generate a complete website based on comprehensive user input

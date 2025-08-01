@@ -9,9 +9,13 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const toggleMenu = () => {
@@ -52,11 +56,11 @@ const Navbar = () => {
                 Website Builder
               </Link>
               <Link 
-                to="/dashboard/content-generator" 
-                className={`nav-link ${isActive('/dashboard/content-generator') ? 'active' : ''}`}
+                to="/dashboard/content-generation" 
+                className={`nav-link ${isActive('/dashboard/content-generation') ? 'active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="nav-icon">✨</span>
+                <span className="nav-icon">🎨</span>
                 Content Generator
               </Link>
               <Link 
@@ -109,6 +113,14 @@ const Navbar = () => {
                   <span className="user-name">{currentUser.name}</span>
                   <span className="user-business">{currentUser.businessName}</span>
                 </div>
+                <Link 
+                  to="/dashboard/profile" 
+                  className="profile-btn"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="nav-icon">👤</span>
+                  Profile Settings
+                </Link>
                 <button onClick={handleLogout} className="logout-btn">
                   <span className="nav-icon">🚪</span>
                   Logout

@@ -6,13 +6,23 @@ import './LoginPage.css';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login, error } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (login(email, password)) {
-      navigate('/dashboard');
+    setIsLoading(true);
+    
+    try {
+      const success = await login(email, password);
+      if (success) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,13 +61,15 @@ const LoginPage = () => {
             />
           </div>
           
-          <button type="submit" className="login-button">Sign In</button>
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </button>
         </form>
         
         <div className="login-footer">
           <p>Don't have an account? <Link to="/register">Sign up</Link></p>
           <p className="demo-credentials">
-            <small>Demo credentials: demo@smartbiz.com / password123</small>
+            <small>Create a new account or use existing Firebase credentials</small>
           </p>
         </div>
       </div>

@@ -1,0 +1,164 @@
+.email-tester {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.email-tester h2 {
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.email-tester p {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.test-input {
+  margin-bottom: 2rem;
+}
+
+.test-input label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.test-input input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.test-input input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.test-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.test-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.test-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.test-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.test-btn.minimal {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.test-result {
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.test-result.success {
+  background: #f0f9ff;
+  border: 2px solid #22c55e;
+  color: #065f46;
+}
+
+.test-result.error {
+  background: #fef2f2;
+  border: 2px solid #ef4444;
+  color: #991b1b;
+}
+
+.test-result h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.test-result pre {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+.test-result details {
+  margin-top: 1rem;
+}
+
+.test-result summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.troubleshooting {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+.troubleshooting h4 {
+  margin-top: 0;
+  color: #374151;
+}
+
+.troubleshooting ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.troubleshooting li {
+  margin-bottom: 0.5rem;
+  color: #6b7280;
+}
+
+.config-info {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.config-info h3 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+.config-details p {
+  margin: 0.5rem 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.config-details strong {
+  color: #1e293b;
+}

@@ -19,7 +19,7 @@ const DashboardPage = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Core features data - only the 3 you requested
+  // Core features data - including the new email service
   const features = [
     {
       id: 'website-builder',
@@ -32,21 +32,31 @@ const DashboardPage = () => {
       stats: { created: '2.3K+', avgTime: '5 mins' }
     },
     {
+      id: 'email-marketing',
+      title: 'Email Marketing',
+      description: 'Send professional emails and newsletters to your customers with ease.',
+      longDescription: 'Connect with your customers through powerful email campaigns. Send personalized messages, newsletters, promotions, and automated reminders using our EmailJS integration.',
+      icon: '📧',
+      gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
+      link: '/dashboard/email',
+      stats: { sent: '50K+', deliveryRate: '98%' }
+    },
+    {
       id: 'content-generation',
-      title: 'Content Generator',
-      description: 'Generate compelling marketing content, blog posts, and social media copy instantly.',
-      longDescription: 'Leverage the power of AI to create engaging content for your business. From product descriptions to social media posts, our generator creates content that converts.',
-      icon: '✨',
+      title: 'AI Poster Generator',
+      description: 'Create stunning business posters and marketing content with AI, then share to social media.',
+      longDescription: 'Generate professional marketing posters for your business using AI. Simply describe what you want, and our AI creates beautiful visuals perfect for social media, promotions, and marketing campaigns.',
+      icon: '🎨',
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      link: '/dashboard/content-generator',
-      stats: { generated: '15K+', saved: '80% time' }
+      link: '/dashboard/content-generation',
+      stats: { created: '8K+', shared: '12K+' }
     },
     {
       id: 'business-cards',
       title: 'Business Cards',
       description: 'Design professional business cards that make lasting first impressions.',
       longDescription: 'Create stunning business cards that reflect your brand identity. Choose from premium templates or let our AI design the perfect card for your business.',
-      icon: '�',
+      icon: '📋',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       link: '/dashboard/business-cards',
       stats: { designs: '500+', printed: '1M+' }
@@ -75,16 +85,16 @@ const DashboardPage = () => {
             </p>
           </div>
           
-          <div className="hero-stats">
+          {/* <div className="hero-stats">
             <div className="stat-card">
-              <div className="stat-number">3</div>
+              <div className="stat-number">4</div>
               <div className="stat-label">Powerful Tools</div>
             </div>
             <div className="stat-card">
               <div className="stat-number">{currentTime.toLocaleTimeString()}</div>
               <div className="stat-label">Current Time</div>
             </div>
-          </div>
+          </div> */}
         </div>
         
         <div className="hero-background">
@@ -119,7 +129,7 @@ const DashboardPage = () => {
                   <div className="feature-icon" style={{background: feature.gradient}}>
                     {feature.icon}
                   </div>
-                  <div className="feature-stats">
+                  {/* <div className="feature-stats">
                     <div className="stat">
                       <span className="stat-value">{Object.values(feature.stats)[0]}</span>
                       <span className="stat-key">{Object.keys(feature.stats)[0]}</span>
@@ -128,7 +138,7 @@ const DashboardPage = () => {
                       <span className="stat-value">{Object.values(feature.stats)[1]}</span>
                       <span className="stat-key">{Object.keys(feature.stats)[1]}</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div className="card-body">
@@ -156,6 +166,14 @@ const DashboardPage = () => {
       {/* Quick Actions */}
       <section className="quick-actions">
         <div className="actions-container">
+          <Link to="/dashboard/profile" className="action-item">
+            <div className="action-icon">👤</div>
+            <div className="action-content">
+              <h4>Profile Settings</h4>
+              <p>Update your personal and business information</p>
+            </div>
+          </Link>
+          
           <div className="action-item">
             <div className="action-icon">📊</div>
             <div className="action-content">

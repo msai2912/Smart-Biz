@@ -33,7 +33,7 @@ const LandingPage = () => {
             <Link to="/register" className="cta-button">Start For Free</Link>
           </div>
           <div className="hero-image">
-            <img src="/vite.svg" alt="AI Website Builder" style={{ width: '300px', height: '300px' }}/>
+            <img src="/logo.png" alt="AI Website Builder" style={{ width: '300px', height: '300px' }}/>
           </div>
         </div>
       </section>
