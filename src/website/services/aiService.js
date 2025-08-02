@@ -39,55 +39,180 @@ export const generateWebsiteContent = async (businessInfo, userPreferences = {},
             const { tone = 'professional', style = 'clean', colorPreference, contentFocus } = userPreferences;
             
             // Create a comprehensive prompt for the AI
-            const prompt = `
-            Generate a complete website structure and content for a ${type} business called "${name}".
-            
-            Business Information:
-            - Description: ${description}
-            - Products: ${products || 'Not specified'}
-            - Services: ${services || 'Not specified'}
-            - Target Audience: ${targetAudience || 'General customers'}
-            - Business Goals: ${goals || 'Increase online presence'}
-            
-            User Preferences:
-            - Content Tone: ${tone} (professional, friendly, modern, creative, etc.)
-            - Design Style: ${style} (clean, bold, elegant, minimalist, etc.)
-            - Template: ${selectedTemplate}
-            - Color Preference: ${colorPreference || 'No specific preference'}
-            - Content Focus: ${contentFocus || 'Balanced approach'}
-            
-            Generate the following optimized content:
-            1. A compelling, conversion-focused headline
-            2. A memorable tagline (8-12 words)
-            3. An engaging "About Us" section (2-3 paragraphs that builds trust)
-            4. Detailed "Services/Products" description with benefits
-            5. A strong call-to-action statement
-            6. SEO-optimized meta description
-            7. Key features/benefits list (3-5 items)
-            8. Customer value proposition
-            9. Contact section content
-            10. Additional page suggestions (if applicable)
-            
-            Consider the template style "${selectedTemplate}" and ensure content works well with that design approach.
-            
-            Format the response as a JSON object with these keys: 
-            headline, tagline, about, services, callToAction, metaDescription, keyFeatures, valueProposition, contactMessage, additionalPages
-            `;
+            const prompt = `You are an expert website content creator. Based on the business information provided, generate comprehensive, engaging website content that sounds professional and authentic.
+
+Business Information:
+- Name: ${name}
+- Type: ${type}
+- Description: ${description}
+- Products: ${products || 'Not specified'}
+- Services: ${services || 'Not specified'}
+- Target Audience: ${targetAudience || 'General customers'}
+- Business Goals: ${goals || 'Increase online presence'}
+
+User Preferences:
+- Content Tone: ${tone}
+- Design Style: ${style}
+- Template: ${selectedTemplate}
+- Color Preference: ${colorPreference || 'No specific preference'}
+- Content Focus: ${contentFocus || 'Balanced approach'}
+
+Generate a JSON response with the following structure. Make sure ALL sections are filled with relevant, detailed content:
+
+{
+  "hero": {
+    "headline": "Create a catchy, memorable business title/slogan (NOT just repeating the business name or description, but a creative headline that captures what they do in an engaging way)",
+    "tagline": "A short, punchy tagline that complements the headline (8-12 words max)",
+    "description": "A brief compelling description of what the business offers (2-3 sentences max)",
+    "primaryCTA": "Strong action-oriented call-to-action button text",
+    "secondaryCTA": "Secondary softer call-to-action"
+  },
+  "about": {
+    "title": "Creative section title (not just 'About Us' - make it unique)",
+    "story": "Engaging business story that connects with customers (3-4 sentences)",
+    "mission": "Clear mission statement that shows purpose and values",
+    "whyChooseUs": "Compelling reason why customers should choose this business",
+    "yearsExperience": "Number or description of experience level",
+    "teamSize": "Description of team size and expertise"
+  },
+  "services": {
+    "title": "Creative services section title",
+    "overview": "Overview of what the business provides (2-3 sentences)",
+    "serviceList": [
+      {
+        "name": "Service 1 name",
+        "description": "Detailed description of this service"
+      },
+      {
+        "name": "Service 2 name", 
+        "description": "Detailed description of this service"
+      },
+      {
+        "name": "Service 3 name",
+        "description": "Detailed description of this service"
+      }
+    ],
+    "benefits": "Key benefits customers get from these services",
+    "process": "Brief description of how the business works with clients"
+  },
+  "whatWeOffer": {
+    "title": "Creative offerings section title",
+    "valueStatement": "Strong value proposition statement",
+    "offerings": [
+      {
+        "title": "Offering 1",
+        "description": "Detailed description of this offering"
+      },
+      {
+        "title": "Offering 2",
+        "description": "Detailed description of this offering"
+      },
+      {
+        "title": "Offering 3",
+        "description": "Detailed description of this offering"
+      }
+    ],
+    "features": ["Feature 1", "Feature 2", "Feature 3", "Feature 4"]
+  },
+  "whoWeServe": {
+    "title": "Creative target audience section title",
+    "description": "Description of target customers and their needs",
+    "industries": ["Industry 1", "Industry 2", "Industry 3"],
+    "coverage": "Geographic coverage area",
+    "clientTypes": ["Client type 1", "Client type 2", "Client type 3"]
+  },
+  "testimonials": {
+    "title": "Creative testimonials section title",
+    "overallRating": "4.8",
+    "totalReviews": "150+",
+    "reviews": [
+      {
+        "name": "Realistic customer name",
+        "company": "Company/Role (optional)",
+        "comment": "Authentic-sounding positive review (2-3 sentences)",
+        "rating": "5"
+      },
+      {
+        "name": "Realistic customer name",
+        "company": "Company/Role (optional)", 
+        "comment": "Authentic-sounding positive review (2-3 sentences)",
+        "rating": "5"
+      },
+      {
+        "name": "Realistic customer name",
+        "comment": "Authentic-sounding positive review (2-3 sentences)",
+        "rating": "5"
+      }
+    ]
+  },
+  "whyChooseUs": {
+    "title": "Creative competitive advantage section title",
+    "differentiators": [
+      {
+        "title": "Key differentiator 1",
+        "description": "Why this makes them better than competitors"
+      },
+      {
+        "title": "Key differentiator 2", 
+        "description": "Why this makes them better than competitors"
+      },
+      {
+        "title": "Key differentiator 3",
+        "description": "Why this makes them better than competitors"
+      }
+    ],
+    "guarantees": "Strong guarantee or promise to customers"
+  },
+  "contact": {
+    "title": "Creative contact section title",
+    "encouragement": "Encouraging message to get customers to reach out",
+    "expectation": "What customers can expect when they contact",
+    "responseTime": "How quickly they respond",
+    "consultationInfo": "Information about free consultation or initial meeting"
+  },
+  "additionalContent": {
+    "metaDescription": "SEO-optimized meta description (150-160 characters)",
+    "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+    "faq": [
+      {
+        "question": "Common question customers ask",
+        "answer": "Helpful answer to the question"
+      },
+      {
+        "question": "Another common question",
+        "answer": "Helpful answer to the question"
+      }
+    ],
+    "blogIdeas": ["Blog post idea 1", "Blog post idea 2", "Blog post idea 3"],
+    "socialBio": "Short social media bio description"
+  }
+}
+
+IMPORTANT: 
+- Make the headline CREATIVE and CATCHY, not just a repeat of the business name or description
+- Fill ALL arrays with multiple relevant items
+- Make content sound authentic and professional
+- Tailor everything specifically to this business type and description
+- Use industry-specific language where appropriate
+- Make testimonials sound realistic and specific
+- Ensure all content is substantial and detailed`;
 
             const response = await openai.chat.completions.create({
                 model: "gemini-2.0-flash",
                 messages: [
                     { 
                         role: "system", 
-                        content: `You are an expert website content creator and UX designer specializing in small business websites. 
-                        You understand modern web design principles, conversion optimization, and how to create compelling content that drives business results.
-                        Always respond with valid JSON and ensure content is tailored to the specific business type and user preferences.
-                        Consider SEO best practices and user experience in your content generation.`
+                        content: `You are an expert website content creator, copywriter, and digital marketing specialist. 
+                        You specialize in creating comprehensive, conversion-focused website content for small to medium businesses.
+                        You understand industry-specific language, customer psychology, and modern web content best practices.
+                        Always respond with valid JSON and ensure all content is highly specific to the business type and description provided.
+                        Create content that builds trust, demonstrates expertise, and drives action.
+                        Include realistic testimonials that sound authentic and specific to the business type.`
                     },
                     { role: "user", content: prompt }
                 ],
                 temperature: 0.7,
-                max_tokens: 2000
+                max_tokens: 4000
             });
 
             // Parse the response to get the generated content
@@ -96,26 +221,96 @@ export const generateWebsiteContent = async (businessInfo, userPreferences = {},
                 // Try to parse as JSON directly
                 const parsedContent = JSON.parse(content);
                 
-                // Validate that all required fields are present
-                const requiredFields = ['headline', 'tagline', 'about', 'services', 'callToAction'];
-                const optionalFields = ['metaDescription', 'keyFeatures', 'valueProposition', 'contactMessage', 'additionalPages'];
-                const missingFields = requiredFields.filter(field => !parsedContent[field]);
+                // Validate that core sections are present
+                const requiredSections = ['hero', 'about', 'services', 'contact'];
+                const optionalSections = ['whatWeOffer', 'whoWeServe', 'testimonials', 'whyChooseUs', 'additionalContent'];
                 
-                if (missingFields.length > 0) {
-                    throw new AIServiceError(
-                        `AI response missing required fields: ${missingFields.join(', ')}`,
-                        'incomplete_response'
-                    );
-                }
-                
-                // Ensure optional fields have defaults
+                // Create a comprehensive content structure
                 const completeContent = {
-                    ...parsedContent,
-                    metaDescription: parsedContent.metaDescription || `${businessInfo.name} - ${parsedContent.tagline}`,
-                    keyFeatures: parsedContent.keyFeatures || [],
-                    valueProposition: parsedContent.valueProposition || parsedContent.about?.split('.')[0] || 'Your trusted local business',
-                    contactMessage: parsedContent.contactMessage || 'Get in touch with us today!',
-                    additionalPages: parsedContent.additionalPages || []
+                    // Hero Section
+                    hero: {
+                        headline: parsedContent.hero?.headline || parsedContent.headline || `Welcome to ${businessInfo.name}`,
+                        tagline: parsedContent.hero?.tagline || parsedContent.tagline || `Your trusted ${businessInfo.type}`,
+                        description: parsedContent.hero?.description || parsedContent.hero?.subtitle || businessInfo.description,
+                        primaryCTA: parsedContent.hero?.primaryCTA || 'Get Started Today',
+                        secondaryCTA: parsedContent.hero?.secondaryCTA || 'Learn More'
+                    },
+                    
+                    // About Section
+                    about: {
+                        title: parsedContent.about?.title || 'About Us',
+                        mission: parsedContent.about?.mission || `${businessInfo.name} is committed to providing exceptional service.`,
+                        story: parsedContent.about?.story || parsedContent.about || businessInfo.description,
+                        whyChooseUs: parsedContent.about?.whyChooseUs || 'Experience, quality, and customer satisfaction are our priorities.',
+                        yearsExperience: parsedContent.about?.yearsExperience || '10+',
+                        teamSize: parsedContent.about?.teamSize || 'Professional team'
+                    },
+                    
+                    // Services Section
+                    services: {
+                        title: parsedContent.services?.title || 'Our Services',
+                        overview: parsedContent.services?.overview || `${businessInfo.name} offers comprehensive services tailored to your needs.`,
+                        serviceList: parsedContent.services?.serviceList || parsedContent.services?.list || [],
+                        benefits: parsedContent.services?.benefits || 'Quality service with professional results.',
+                        process: parsedContent.services?.process || 'We work closely with our clients to ensure satisfaction.'
+                    },
+                    
+                    // What We Offer Section
+                    whatWeOffer: {
+                        title: parsedContent.whatWeOffer?.title || 'What We Offer',
+                        categories: parsedContent.whatWeOffer?.categories || [],
+                        offerings: parsedContent.whatWeOffer?.offerings || parsedContent.whatWeOffer?.items || [],
+                        features: parsedContent.whatWeOffer?.features || [],
+                        valueStatement: parsedContent.whatWeOffer?.valueStatement || 'Comprehensive solutions for all your needs.'
+                    },
+                    
+                    // Who We Serve Section
+                    whoWeServe: {
+                        title: parsedContent.whoWeServe?.title || 'Who We Serve',
+                        description: parsedContent.whoWeServe?.description || businessInfo.targetAudience || 'We serve a diverse range of clients.',
+                        industries: parsedContent.whoWeServe?.industries || [],
+                        coverage: parsedContent.whoWeServe?.coverage || 'Local and regional area',
+                        clientTypes: parsedContent.whoWeServe?.clientTypes || ['Individual clients', 'Businesses']
+                    },
+                    
+                    // Testimonials Section
+                    testimonials: {
+                        title: parsedContent.testimonials?.title || 'What Our Clients Say',
+                        reviews: parsedContent.testimonials?.reviews || parsedContent.testimonials || [],
+                        overallRating: parsedContent.testimonials?.overallRating || '4.9',
+                        totalReviews: parsedContent.testimonials?.totalReviews || '100+'
+                    },
+                    
+                    // Why Choose Us Section
+                    whyChooseUs: {
+                        title: parsedContent.whyChooseUs?.title || 'Why Choose Us',
+                        differentiators: parsedContent.whyChooseUs?.differentiators || parsedContent.whyChooseUs || [],
+                        advantages: parsedContent.whyChooseUs?.advantages || [],
+                        guarantees: parsedContent.whyChooseUs?.guarantees || 'Satisfaction guaranteed'
+                    },
+                    
+                    // Contact Section
+                    contact: {
+                        title: parsedContent.contact?.title || 'Get In Touch',
+                        encouragement: parsedContent.contact?.encouragement || parsedContent.contactMessage || 'Ready to get started? Contact us today!',
+                        expectation: parsedContent.contact?.expectation || 'We\'ll respond promptly to discuss your needs.',
+                        responseTime: parsedContent.contact?.responseTime || 'Within 24 hours',
+                        consultationInfo: parsedContent.contact?.consultationInfo || 'Free consultation available'
+                    },
+                    
+                    // Additional Content
+                    additionalContent: {
+                        metaDescription: parsedContent.additionalContent?.metaDescription || parsedContent.metaDescription || `${businessInfo.name} - ${businessInfo.description}`,
+                        keywords: parsedContent.additionalContent?.keywords || [],
+                        faq: parsedContent.additionalContent?.faq || [],
+                        blogIdeas: parsedContent.additionalContent?.blogIdeas || [],
+                        socialBio: parsedContent.additionalContent?.socialBio || `${businessInfo.name} - ${businessInfo.description}`
+                    },
+                    
+                    // Legacy support for existing templates
+                    headline: parsedContent.hero?.headline || parsedContent.headline || `Welcome to ${businessInfo.name}`,
+                    tagline: parsedContent.hero?.tagline || parsedContent.tagline || `Your trusted ${businessInfo.type}`,
+                    callToAction: parsedContent.hero?.primaryCTA || parsedContent.callToAction || 'Get Started Today'
                 };
                 
                 return completeContent;
@@ -124,6 +319,35 @@ export const generateWebsiteContent = async (businessInfo, userPreferences = {},
                 console.warn("AI response not in JSON format, extracting manually");
                 
                 const extractedContent = {
+                    hero: {
+                        headline: extractSection(content, "headline") || `Welcome to ${businessInfo.name}`,
+                        tagline: extractSection(content, "tagline") || `Your trusted ${businessInfo.type}`,
+                        description: businessInfo.description,
+                        primaryCTA: 'Get Started Today',
+                        secondaryCTA: 'Learn More'
+                    },
+                    about: {
+                        title: 'About Us',
+                        story: extractSection(content, "about") || businessInfo.description,
+                        mission: `${businessInfo.name} is committed to providing exceptional service.`,
+                        whyChooseUs: 'Experience, quality, and customer satisfaction.',
+                        yearsExperience: '10+',
+                        teamSize: 'Professional team'
+                    },
+                    services: {
+                        title: 'Our Services',
+                        overview: extractSection(content, "services") || businessInfo.services || businessInfo.products,
+                        serviceList: [],
+                        benefits: 'Quality service with professional results.',
+                        process: 'We work closely with our clients.'
+                    },
+                    contact: {
+                        title: 'Get In Touch',
+                        encouragement: extractSection(content, "callToAction") || "Contact us today!",
+                        expectation: 'We\'ll respond promptly to discuss your needs.',
+                        responseTime: 'Within 24 hours'
+                    },
+                    // Legacy support
                     headline: extractSection(content, "headline") || `Welcome to ${businessInfo.name}`,
                     tagline: extractSection(content, "tagline") || `Your trusted ${businessInfo.type}`,
                     about: extractSection(content, "about") || businessInfo.description,

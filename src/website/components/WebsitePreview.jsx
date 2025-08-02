@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './WebsitePreview.css';
 import ContentEditor from './ContentEditor';
+import Chatbot from './Chatbot';
 import { downloadWebsite, previewWebsite, generateWebsiteHTML } from '../services/websiteExporter';
 import { useNotification } from './Notification';
 
@@ -11,23 +12,109 @@ function WebsitePreview({ businessInfo, content, template, styles, isFullScreen 
   const [websiteHTML, setWebsiteHTML] = useState('');
   const { showNotification, NotificationComponent } = useNotification();
 
-  // Default content in case any sections are missing
+  // Default comprehensive content structure
   const defaultContent = {
+    // Hero Section
+    hero: {
+      headline: businessInfo.name ? `Welcome to ${businessInfo.name}` : 'Welcome to Our Business',
+      tagline: businessInfo.type ? `Your trusted ${businessInfo.type.toLowerCase()}` : 'Your trusted local business',
+      description: businessInfo.description || 'Professional services tailored to your needs',
+      primaryCTA: 'Get Started Today',
+      secondaryCTA: 'Learn More'
+    },
+    
+    // About Section
+    about: {
+      title: 'About Us',
+      story: businessInfo.description || 'About our business...',
+      mission: `${businessInfo.name || 'We'} are committed to providing exceptional service.`,
+      whyChooseUs: 'Experience, quality, and customer satisfaction.',
+      yearsExperience: '10+',
+      teamSize: 'Professional team'
+    },
+    
+    // Services Section
+    services: {
+      title: 'Our Services',
+      overview: businessInfo.services || businessInfo.products || 'Our comprehensive service offerings',
+      serviceList: [],
+      benefits: 'Quality service with professional results.',
+      process: 'We work closely with our clients to ensure satisfaction.'
+    },
+    
+    // What We Offer Section
+    whatWeOffer: {
+      title: 'What We Offer',
+      categories: [],
+      offerings: [],
+      features: [],
+      valueStatement: 'Comprehensive solutions for all your needs.'
+    },
+    
+    // Who We Serve Section
+    whoWeServe: {
+      title: 'Who We Serve',
+      description: businessInfo.targetAudience || 'We serve a diverse range of clients.',
+      industries: [],
+      coverage: businessInfo.location || 'Local and regional area',
+      clientTypes: ['Individual clients', 'Businesses']
+    },
+    
+    // Testimonials Section
+    testimonials: {
+      title: 'What Our Clients Say',
+      reviews: [],
+      overallRating: '4.9',
+      totalReviews: '100+'
+    },
+    
+    // Why Choose Us Section
+    whyChooseUs: {
+      title: 'Why Choose Us',
+      differentiators: ['Experience', 'Quality', 'Customer Service'],
+      advantages: [],
+      guarantees: 'Satisfaction guaranteed'
+    },
+    
+    // Contact Section
+    contact: {
+      title: 'Get In Touch',
+      encouragement: 'Ready to get started? Contact us today!',
+      expectation: 'We\'ll respond promptly to discuss your needs.',
+      responseTime: 'Within 24 hours',
+      consultationInfo: 'Free consultation available'
+    },
+    
+    // Additional Content
+    additionalContent: {
+      metaDescription: `${businessInfo.name || 'Local Business'} - ${businessInfo.description || 'Professional services'}`,
+      keywords: [],
+      faq: [],
+      blogIdeas: [],
+      socialBio: `${businessInfo.name || 'Local Business'} - ${businessInfo.description || 'Professional services'}`
+    },
+    
+    // Legacy support for existing templates
     headline: businessInfo.name ? `Welcome to ${businessInfo.name}` : 'Welcome to Our Business',
     tagline: businessInfo.type ? `Your trusted ${businessInfo.type.toLowerCase()}` : 'Your trusted local business',
-    about: businessInfo.description || 'About our business...',
-    services: businessInfo.services || businessInfo.products || 'Our offerings',
     callToAction: 'Contact us today!'
   };
 
-  // Merge generated content with defaults (to handle missing fields)
-  const displayContent = {
-    headline: editableContent?.headline || defaultContent.headline,
-    tagline: editableContent?.tagline || defaultContent.tagline,
-    about: editableContent?.about || defaultContent.about,
-    services: editableContent?.services || defaultContent.services,
-    callToAction: editableContent?.callToAction || defaultContent.callToAction
+  // Deep merge function to handle nested objects
+  const deepMerge = (target, source) => {
+    const result = { ...target };
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        result[key] = deepMerge(target[key] || {}, source[key]);
+      } else if (source[key] !== undefined && source[key] !== null) {
+        result[key] = source[key];
+      }
+    }
+    return result;
   };
+
+  // Merge generated content with defaults (to handle missing fields)
+  const displayContent = deepMerge(defaultContent, editableContent || {});
 
   const handleContentChange = (newContent) => {
     setEditableContent(newContent);
@@ -128,6 +215,13 @@ function WebsitePreview({ businessInfo, content, template, styles, isFullScreen 
               title="Website Preview"
               sandbox="allow-same-origin allow-scripts"
             />
+            {/* Chatbot overlay for preview */}
+            <div className="chatbot-overlay">
+              <Chatbot 
+                businessInfo={businessInfo} 
+                isDemo={true}
+              />
+            </div>
           </div>
         </div>
 

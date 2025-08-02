@@ -207,7 +207,7 @@ const EnhancedWebsiteBuilderPage = () => {
               <p>AI has created a custom website based on your business description</p>
             </div>
 
-            {generatedWebsite && (
+              {generatedWebsite && (
               <div className="website-preview-section">
                 <div className="generation-info">
                   <div className="info-badge">
@@ -222,9 +222,37 @@ const EnhancedWebsiteBuilderPage = () => {
                     <span className="badge-icon">📝</span>
                     Content: Custom Generated
                   </div>
+                  <div className="info-badge">
+                    <span className="badge-icon">🤖</span>
+                    AI Chatbot: Integrated
+                  </div>
                 </div>
 
-                <WebsitePreview
+                <div className="chatbot-features">
+                  <h3>✨ Your Website Includes an AI Customer Service Chatbot!</h3>
+                  <div className="feature-list">
+                    <div className="feature-item">
+                      <span className="feature-icon">💬</span>
+                      <span>24/7 Customer Support</span>
+                    </div>
+                    <div className="feature-item">
+                      <span className="feature-icon">🧠</span>
+                      <span>AI-Powered Responses</span>
+                    </div>
+                    <div className="feature-item">
+                      <span className="feature-icon">📋</span>
+                      <span>Business Information Assistant</span>
+                    </div>
+                    <div className="feature-item">
+                      <span className="feature-icon">📞</span>
+                      <span>Contact & Booking Help</span>
+                    </div>
+                  </div>
+                  <p className="chatbot-description">
+                    The chatbot is trained on your business information and can answer customer 
+                    questions about your services, hours, location, and more. Try it out in the preview below!
+                  </p>
+                </div>                <WebsitePreview
                   businessInfo={generatedWebsite.businessInfo}
                   content={generatedWebsite.content}
                   template={generatedWebsite.template}

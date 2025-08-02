@@ -66,11 +66,34 @@ export class EnhancedWebsiteGenerator {
         data: {
           ...enhancedTemplateData,
           html: websiteHTML,
+          chatbot: {
+            enabled: true,
+            businessContext: {
+              name: analyzedBusiness.name,
+              description: analyzedBusiness.description,
+              type: analyzedBusiness.type,
+              services: analyzedBusiness.services,
+              contact: {
+                phone: analyzedBusiness.phone,
+                email: analyzedBusiness.email,
+                address: analyzedBusiness.address,
+                hours: analyzedBusiness.hours
+              }
+            },
+            features: [
+              'AI-powered responses',
+              'Business information queries', 
+              'Customer service automation',
+              'Contact assistance',
+              'Service inquiries'
+            ]
+          },
           metadata: {
             generationType: 'ai-description',
             originalDescription: businessDescription,
             processingTime: Date.now(),
-            version: '2.0'
+            version: '2.0',
+            features: ['chatbot-integrated']
           }
         }
       };

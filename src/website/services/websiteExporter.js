@@ -148,8 +148,55 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
           
           .hero .tagline {
             font-size: 1.3rem;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             opacity: 0.9;
+          }
+          
+          .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          
+          .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+          
+          .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+          }
+          
+          .btn.primary {
+            background: ${displayStyles.accentColor};
+            color: white;
+          }
+          
+          .btn.primary:hover {
+            background: ${displayStyles.accentColor}dd;
+            transform: translateY(-2px);
+          }
+          
+          .btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+          }
+          
+          .btn.secondary:hover {
+            background: white;
+            color: ${displayStyles.primaryColor};
           }
           
           .section {
@@ -159,50 +206,318 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
           .section h2 {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
             color: ${displayStyles.primaryColor};
           }
           
+          .section-description {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 50px;
+          }
+          
+          /* About Section */
           .about-section {
             background: #f8f9fa;
           }
           
           .about-content {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
-            text-align: center;
-            font-size: 1.1rem;
           }
           
+          .about-story, .about-mission {
+            margin-bottom: 40px;
+            text-align: center;
+          }
+          
+          .about-story h3, .about-mission h3 {
+            font-size: 1.5rem;
+            color: ${displayStyles.primaryColor};
+            margin-bottom: 15px;
+          }
+          
+          .about-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 50px;
+          }
+          
+          .stat {
+            text-align: center;
+          }
+          
+          .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: ${displayStyles.primaryColor};
+          }
+          
+          .stat-label {
+            font-size: 1rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+          
+          /* Services Section */
           .services-section {
             background: white;
           }
           
-          .services-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 1.1rem;
+          .services-grid, .offerings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
           }
           
-          footer {
-            background: #333;
+          .service-item, .offering-item {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s ease;
+          }
+          
+          .service-item:hover, .offering-item:hover {
+            transform: translateY(-5px);
+          }
+          
+          .service-item h3, .offering-item h3 {
+            color: ${displayStyles.primaryColor};
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+          }
+          
+          /* What We Offer Section */
+          .offerings-section {
+            background: #f8f9fa;
+          }
+          
+          /* Who We Serve Section */
+          .serve-section {
+            background: white;
+          }
+          
+          .industries-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+          }
+          
+          .industry-tag {
+            background: ${displayStyles.primaryColor};
             color: white;
-            text-align: center;
-            padding: 50px 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
           }
           
-          .contact-info {
+          .coverage-info {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 20px;
+          }
+          
+          /* Testimonials Section */
+          .testimonials-section {
+            background: #f8f9fa;
+          }
+          
+          .testimonials-stats {
+            text-align: center;
+            margin-bottom: 50px;
+          }
+          
+          .rating {
+            display: inline-block;
+            background: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          }
+          
+          .rating-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: ${displayStyles.primaryColor};
+            display: block;
+          }
+          
+          .rating-stars {
+            color: #ffc107;
+            font-size: 1.5rem;
+            display: block;
+            margin: 5px 0;
+          }
+          
+          .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+          }
+          
+          .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+          }
+          
+          .testimonial-item {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          }
+          
+          .testimonial-content {
             margin-bottom: 20px;
           }
           
-          .contact-info p {
-            margin-bottom: 5px;
+          .testimonial-content p {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.6;
+          }
+          
+          .testimonial-author strong {
+            color: ${displayStyles.primaryColor};
+            font-size: 1.1rem;
+          }
+          
+          .company {
+            display: block;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+          }
+          
+          .testimonial-rating {
+            color: #ffc107;
+            margin-top: 10px;
+          }
+          
+          /* Why Choose Us Section */
+          .why-choose-section {
+            background: white;
+          }
+          
+          .differentiators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+          }
+          
+          .differentiator-item {
+            text-align: center;
+            padding: 20px;
+          }
+          
+          .differentiator-item h3 {
+            color: ${displayStyles.primaryColor};
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+          }
+          
+          .guarantee {
+            text-align: center;
+            background: ${displayStyles.primaryColor}10;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 4px solid ${displayStyles.primaryColor};
+          }
+          
+          .guarantee-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: ${displayStyles.primaryColor};
+          }
+          
+          /* Contact Section */
+          footer {
+            background: #333;
+            color: white;
+            padding: 60px 0 30px;
+          }
+          
+          .contact-section {
+            text-align: center;
+            margin-bottom: 40px;
+          }
+          
+          .contact-section h2 {
+            color: white;
+            margin-bottom: 20px;
+          }
+          
+          .contact-encouragement {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+          }
+          
+          .contact-expectation {
+            color: #ccc;
+            margin-bottom: 30px;
+          }
+          
+          .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+          }
+          
+          .contact-item {
+            font-size: 1.1rem;
+            margin: 5px 0;
+          }
+          
+          .response-info {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #555;
+          }
+          
+          .response-info p {
+            color: #ccc;
+            margin: 5px 0;
+          }
+          
+          .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #555;
+            color: #ccc;
+          }
           }
           
           @media (max-width: 768px) {
             .hero h1 {
               font-size: 2.5rem;
+            }
+            
+            .hero-description {
+              font-size: 1rem;
+            }
+            
+            .hero-buttons {
+              flex-direction: column;
+              align-items: center;
+            }
+            
+            .btn {
+              width: 250px;
             }
             
             nav ul {
@@ -213,6 +528,37 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
             .header-content {
               flex-direction: column;
               gap: 20px;
+            }
+            
+            .about-stats {
+              flex-direction: column;
+              gap: 30px;
+            }
+            
+            .services-grid, .offerings-grid, .testimonials-grid, .differentiators-grid {
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
+            
+            .contact-info {
+              flex-direction: column;
+              gap: 15px;
+            }
+            
+            .industries-list {
+              justify-content: center;
+            }
+            
+            .section {
+              padding: 50px 0;
+            }
+            
+            .section h2 {
+              font-size: 2rem;
+            }
+            
+            .container {
+              padding: 0 20px;
             }
           }
         `;
@@ -480,6 +826,7 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${businessInfo.name || 'Business Website'}</title>
+    <meta name="description" content="${displayContent.additionalContent?.metaDescription || `${businessInfo.name} - ${businessInfo.description}`}">
     <style>${generateCSS()}</style>
 </head>
 <body>
@@ -492,6 +839,7 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#services">Services</a></li>
+                        <li><a href="#testimonials">Reviews</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </nav>
@@ -499,40 +847,187 @@ export const generateWebsiteHTML = (businessInfo, content, template, styles) => 
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <h1>${displayContent.headline}</h1>
-            <p class="tagline">${displayContent.tagline}</p>
-            <a href="#contact" class="btn">${displayContent.callToAction}</a>
+            <h1>${displayContent.hero?.headline || displayContent.headline}</h1>
+            <p class="tagline">${displayContent.hero?.tagline || displayContent.tagline}</p>
+            <p class="hero-description">${displayContent.hero?.description || businessInfo.description}</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn primary">${displayContent.hero?.primaryCTA || displayContent.callToAction}</a>
+                <a href="#about" class="btn secondary">${displayContent.hero?.secondaryCTA || 'Learn More'}</a>
+            </div>
         </div>
     </section>
 
+    <!-- About Section -->
     <section class="section about-section" id="about">
         <div class="container">
-            <h2>About Us</h2>
+            <h2>${displayContent.about?.title || 'About Us'}</h2>
             <div class="about-content">
-                <p>${displayContent.about}</p>
+                <div class="about-story">
+                    <h3>Our Story</h3>
+                    <p>${displayContent.about?.story || displayContent.about}</p>
+                </div>
+                <div class="about-mission">
+                    <h3>Our Mission</h3>
+                    <p>${displayContent.about?.mission || `${businessInfo.name} is committed to providing exceptional service.`}</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <span class="stat-number">${displayContent.about?.yearsExperience || '10+'}</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">${displayContent.about?.teamSize || 'Professional'}</span>
+                        <span class="stat-label">Team</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Services Section -->
     <section class="section services-section" id="services">
         <div class="container">
-            <h2>${businessInfo.services ? 'Our Services' : 'Our Products'}</h2>
-            <div class="services-content">
-                <p>${displayContent.services}</p>
+            <h2>${displayContent.services?.title || (businessInfo.services ? 'Our Services' : 'Our Products')}</h2>
+            <p class="section-description">${displayContent.services?.overview || displayContent.services}</p>
+            
+            ${displayContent.services?.serviceList && displayContent.services.serviceList.length > 0 ? `
+            <div class="services-grid">
+                ${displayContent.services.serviceList.map(service => `
+                    <div class="service-item">
+                        <h3>${service.name || service}</h3>
+                        <p>${service.description || 'Professional service tailored to your needs.'}</p>
+                    </div>
+                `).join('')}
             </div>
+            ` : ''}
         </div>
     </section>
 
+    <!-- What We Offer Section -->
+    ${displayContent.whatWeOffer?.offerings && displayContent.whatWeOffer.offerings.length > 0 ? `
+    <section class="section offerings-section">
+        <div class="container">
+            <h2>${displayContent.whatWeOffer.title || 'What We Offer'}</h2>
+            <p class="section-description">${displayContent.whatWeOffer.valueStatement}</p>
+            <div class="offerings-grid">
+                ${displayContent.whatWeOffer.offerings.map(offering => `
+                    <div class="offering-item">
+                        <h3>${offering.title || offering.name || offering}</h3>
+                        <p>${offering.description || 'Quality offering designed for your success.'}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    <!-- Who We Serve Section -->
+    ${displayContent.whoWeServe?.description || displayContent.whoWeServe?.industries?.length > 0 ? `
+    <section class="section serve-section">
+        <div class="container">
+            <h2>${displayContent.whoWeServe.title || 'Who We Serve'}</h2>
+            <p class="section-description">${displayContent.whoWeServe.description}</p>
+            ${displayContent.whoWeServe.industries && displayContent.whoWeServe.industries.length > 0 ? `
+            <div class="industries-list">
+                ${displayContent.whoWeServe.industries.map(industry => `
+                    <span class="industry-tag">${industry}</span>
+                `).join('')}
+            </div>
+            ` : ''}
+            <p class="coverage-info">Coverage: ${displayContent.whoWeServe.coverage}</p>
+        </div>
+    </section>
+    ` : ''}
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials-section" id="testimonials">
+        <div class="container">
+            <h2>${displayContent.testimonials?.title || 'What Our Clients Say'}</h2>
+            <div class="testimonials-stats">
+                <div class="rating">
+                    <span class="rating-number">${displayContent.testimonials?.overallRating || '4.9'}</span>
+                    <span class="rating-stars">★★★★★</span>
+                    <span class="rating-text">Based on ${displayContent.testimonials?.totalReviews || '100+'} reviews</span>
+                </div>
+            </div>
+            
+            ${displayContent.testimonials?.reviews && displayContent.testimonials.reviews.length > 0 ? `
+            <div class="testimonials-grid">
+                ${displayContent.testimonials.reviews.slice(0, 3).map(review => `
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <p>"${review.comment || review.review || review}"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <strong>${review.name || review.author || 'Satisfied Customer'}</strong>
+                            ${review.company ? `<span class="company">${review.company}</span>` : ''}
+                            <div class="testimonial-rating">★★★★★</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            ` : `
+            <div class="testimonials-grid">
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <p>"Excellent service and professional results. Highly recommended!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <strong>Satisfied Customer</strong>
+                        <div class="testimonial-rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+            `}
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    ${displayContent.whyChooseUs?.differentiators && displayContent.whyChooseUs.differentiators.length > 0 ? `
+    <section class="section why-choose-section">
+        <div class="container">
+            <h2>${displayContent.whyChooseUs.title || 'Why Choose Us'}</h2>
+            <div class="differentiators-grid">
+                ${displayContent.whyChooseUs.differentiators.map(diff => `
+                    <div class="differentiator-item">
+                        <h3>${diff.title || diff}</h3>
+                        <p>${diff.description || 'We excel in delivering exceptional results.'}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="guarantee">
+                <p class="guarantee-text">${displayContent.whyChooseUs.guarantees}</p>
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    <!-- Contact Section -->
     <footer id="contact">
         <div class="container">
-            <div class="contact-info">
-                ${businessInfo.address ? `<p>${businessInfo.address}</p>` : ''}
-                ${businessInfo.phone ? `<p>${businessInfo.phone}</p>` : ''}
-                ${businessInfo.email ? `<p>${businessInfo.email}</p>` : ''}
+            <div class="contact-section">
+                <h2>${displayContent.contact?.title || 'Get In Touch'}</h2>
+                <p class="contact-encouragement">${displayContent.contact?.encouragement || displayContent.callToAction}</p>
+                <p class="contact-expectation">${displayContent.contact?.expectation || 'We\'ll respond promptly to discuss your needs.'}</p>
+                
+                <div class="contact-info">
+                    ${businessInfo.address ? `<p class="contact-item">📍 ${businessInfo.address}</p>` : ''}
+                    ${businessInfo.phone ? `<p class="contact-item">📞 ${businessInfo.phone}</p>` : ''}
+                    ${businessInfo.email ? `<p class="contact-item">✉️ ${businessInfo.email}</p>` : ''}
+                </div>
+                
+                <div class="response-info">
+                    <p>Response time: ${displayContent.contact?.responseTime || 'Within 24 hours'}</p>
+                    <p>${displayContent.contact?.consultationInfo || 'Free consultation available'}</p>
+                </div>
             </div>
-            <p>© 2025 ${businessInfo.name || 'Your Business'}. All rights reserved.</p>
+            
+            <div class="footer-bottom">
+                <p>© 2025 ${businessInfo.name || 'Your Business'}. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 </body>

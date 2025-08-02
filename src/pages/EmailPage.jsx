@@ -13,13 +13,7 @@ const EmailPage = () => {
 
   return (
     <div className="email-page">
-      <header className="page-header">
-        <Link to="/dashboard" className="back-link">← Back to Dashboard</Link>
-        <div className="header-content">
-          <h1>Email Marketing</h1>
-          <p>Communicate with your customers through professional email campaigns</p>
-        </div>
-      </header>
+      
 
       <div className="email-page-content">
         <EmailSender />
